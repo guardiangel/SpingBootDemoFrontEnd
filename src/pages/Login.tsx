@@ -58,15 +58,16 @@ export default function Login() {
     submitLogin(data).then((res) => {
       if (res.status === 200) {
         alert("login success.");
+        console.log(res.data.data.loginName);
         dispatch(
           setLoginState({
             loginState: true,
-            token: res.data.token,
-            loginName: res.data.loginName,
-            userId: res.data.userId,
+            token: res.data.data?.token,
+            loginName: res.data.data?.loginName,
+            userId: res.data.data?.userId,
           })
         );
-        //sessionStorage.setItem("token", res.data.accessToken);
+        //sessionStorage.setItem("token", res.data.token);
         //sessionStorage.setItem("loginName", res.data.loginName);
         //sessionStorage.setItem("userId", res.data.userId);
         navigate("/mainPage");

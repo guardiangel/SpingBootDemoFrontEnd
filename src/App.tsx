@@ -14,16 +14,10 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline>
-              <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/mainPage" element={<MainPage />} />
-              </Routes>
-            </CssBaseline>
-          </ThemeProvider>
-        </ColorModeContext.Provider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/mainPage" element={<MainPage />} />
+        </Routes>
       </PersistGate>
     </Provider>
   );

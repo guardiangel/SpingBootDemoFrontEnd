@@ -5,7 +5,7 @@ import { Theme, ThemeOptions } from "@mui/material/styles";
 //colors used. Install "Tailwind Shades" from Extneds on the left menu bar. macOS: cmd+k cmd+g
 //Others: ctrl+k ctrl+g
 export const colorTokens = (mode: PaletteMode | string) => ({
-  ...(mode === "light"
+  ...(mode === "dark"
     ? {
         grey: {
           100: "#e0e0e0",
