@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 interface LoginStateType {
   loginState: boolean;
   token: string;
-  userName: string;
+  loginName: string;
   userId: string;
 }
 
@@ -16,7 +16,7 @@ export const LoginReducerSlice = createSlice({
   initialState: {
     loginState: false,
     token: "",
-    userName: "",
+    loginName: "",
     userId: "",
   },
   reducers: {

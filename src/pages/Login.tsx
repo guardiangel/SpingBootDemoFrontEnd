@@ -24,24 +24,21 @@ export default function Login() {
   const dispatch = useDispatch();
 
   //uuid will be generated once when entering this page since we use useMemo here
-  //Every the page is rendered, the uuid will change by default, that's why we use useMemo.
+  //Every time when the page is re-rendered, the uuid will change by default if we use regular method like uuid = getUuid(),
+  //This's why we use useMemo.
   //In the back end, the program will validate the uuid.
   const [uuid, setUuid] = useState<string>("");
-
   const [imageCode, setImageCode] = useState<string>("");
-
   useMemo(() => {
     setUuid(getUuid());
   }, []);
 
-  console.log(uuid);
-  //fix eslint problem when using useEffect.
+  //fix eslint warning problem when using useEffect.
   const fetchImageCode = useRef(() => {});
   //Get image Code for verification
   fetchImageCode.current = () => {
     getImageCode(uuid)
       .then((res) => {
-        console.log(res.data);
         setImageCode(res.data.data);
       })
       .catch((error) => {
@@ -58,14 +55,13 @@ export default function Login() {
   const handleSubmit = (data: any) => {
     //put uuid into data
     data.uuid = uuid;
-    console.log(data);
     submitLogin(data).then((res) => {
       if (res.status === 200) {
         alert("login success.");
         dispatch(
           setLoginState({
             loginState: true,
-            token: res.data.accessToken,
+            token: res.data.token,
             loginName: res.data.loginName,
             userId: res.data.userId,
           })
