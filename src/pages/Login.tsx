@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import "../App.css";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -13,7 +14,7 @@ import { useTheme } from "@mui/material";
 import { colorTokens } from "../theme";
 import { useDispatch } from "react-redux";
 import { setLoginState } from "../reducers/LoginReducerSlice";
-import axios from "axios";
+import { getImageCode, submitLogin } from "../apis/ApiInterfaces";
 
 export default function Login() {
   const theme = useTheme();
@@ -22,20 +23,23 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
+  //uuid will be generated once when entering this page since we use useMemo here
+  //Every the page is rendered, the uuid will change by default, that's why we use useMemo.
+  //In the back end, the program will validate the uuid.
+  const [uuid, setUuid] = useState<string>("");
+
   const [imageCode, setImageCode] = useState<string>("");
 
+  useMemo(() => {
+    setUuid(getUuid());
+  }, []);
+
+  console.log(uuid);
   //fix eslint problem when using useEffect.
   const fetchImageCode = useRef(() => {});
-
-  const uuid = getUuid();
-
+  //Get image Code for verification
   fetchImageCode.current = () => {
-    axios
-      .get(`http://localhost:8020/login/getLoginImgCode/${uuid}`, {
-        headers: {
-          "Access-Control-Allow-Origin": true,
-        },
-      })
+    getImageCode(uuid)
       .then((res) => {
         console.log(res.data);
         setImageCode(res.data.data);
@@ -45,30 +49,35 @@ export default function Login() {
       });
   };
 
+  //Initialize the image code
   useEffect(() => {
     fetchImageCode.current();
   }, []);
 
+  //Submit form
   const handleSubmit = (data: any) => {
+    //put uuid into data
+    data.uuid = uuid;
     console.log(data);
-    axios
-      .post("http://localhost:3001/user/login", {
-        username: data.username,
-        password: data.password,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          alert("login success.");
-          dispatch(setLoginState({ loginState: true }));
-
-          sessionStorage.setItem("accessToken", res.data.accessToken);
-          sessionStorage.setItem("userName", res.data.userName);
-          sessionStorage.setItem("userId", res.data.userId);
-          navigate("/home");
-        } else {
-          alert(res.data);
-        }
-      });
+    submitLogin(data).then((res) => {
+      if (res.status === 200) {
+        alert("login success.");
+        dispatch(
+          setLoginState({
+            loginState: true,
+            token: res.data.accessToken,
+            loginName: res.data.loginName,
+            userId: res.data.userId,
+          })
+        );
+        //sessionStorage.setItem("token", res.data.accessToken);
+        //sessionStorage.setItem("loginName", res.data.loginName);
+        //sessionStorage.setItem("userId", res.data.userId);
+        navigate("/mainPage");
+      } else {
+        alert(res.data);
+      }
+    });
   };
 
   return (
@@ -100,24 +109,48 @@ export default function Login() {
               padding: "20px",
             }}
           >
-            <ErrorMessage name="username" component="span" />
+            <ErrorMessage
+              name="loginName"
+              component="span"
+              className="loginErrorMessage"
+            />
 
             <Field
-              id="username"
-              name="username"
-              placeholder="username...."
+              id="loginName"
+              name="loginName"
+              placeholder="loginName*"
               style={{
                 margin: "0px 0px 20px 0px",
                 height: "50px",
               }}
             />
 
-            <ErrorMessage name="password" component="span" />
+            <ErrorMessage
+              name="password"
+              component="span"
+              className="loginErrorMessage"
+            />
 
             <Field
               id="password"
               name="password"
-              placeholder="password...."
+              placeholder="password*"
+              style={{
+                margin: "0px 0px 20px 0px",
+                height: "50px",
+              }}
+            />
+
+            <ErrorMessage
+              name="imageCode"
+              component="span"
+              className="loginErrorMessage"
+            />
+
+            <Field
+              id="imageCode"
+              name="imageCode"
+              placeholder="imageCode*"
               style={{
                 margin: "0px 0px 20px 0px",
                 height: "50px",
@@ -127,7 +160,9 @@ export default function Login() {
             <img
               src={imageCode}
               alt="imageCode"
-              onClick={fetchImageCode.current}
+              onClick={() => {
+                fetchImageCode.current();
+              }}
             />
 
             <div>
@@ -169,11 +204,13 @@ const getUuid = (): string => {
 };
 
 const initialValues = {
-  username: "",
+  loginName: "",
   password: "",
+  imageCode: "",
 };
 
 const userSchema = yup.object().shape({
-  username: yup.string().required("required username"),
+  loginName: yup.string().required("required loginName"),
   password: yup.string().min(3).max(25).required("required password"),
+  imageCode: yup.string().required("required imageCode"),
 });

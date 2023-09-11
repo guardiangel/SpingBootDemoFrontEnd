@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface LoginStateType {
   loginState: boolean;
+  token: string;
+  userName: string;
+  userId: string;
 }
 
 export interface LoginState {
@@ -12,6 +15,9 @@ export const LoginReducerSlice = createSlice({
   name: "loginStateObject",
   initialState: {
     loginState: false,
+    token: "",
+    userName: "",
+    userId: "",
   },
   reducers: {
     setLoginState(state, action) {

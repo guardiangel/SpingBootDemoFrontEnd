@@ -17,6 +17,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^1.5.0",
+    "dotenv": "^16.3.1",
     "formic": "^0.0.10",
     "formik": "^2.4.4",
     "react": "^18.2.0",
@@ -28,6 +29,9 @@
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",
