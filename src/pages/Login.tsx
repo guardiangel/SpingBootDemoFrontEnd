@@ -58,7 +58,6 @@ export default function Login() {
     submitLogin(data).then((res) => {
       if (res.status === 200) {
         alert("login success.");
-        console.log(res.data.data.loginName);
         dispatch(
           setLoginState({
             loginState: true,
@@ -67,9 +66,6 @@ export default function Login() {
             userId: res.data.data?.userId,
           })
         );
-        //sessionStorage.setItem("token", res.data.token);
-        //sessionStorage.setItem("loginName", res.data.loginName);
-        //sessionStorage.setItem("userId", res.data.userId);
         navigate("/mainPage");
       } else {
         alert(res.data);
@@ -92,6 +88,7 @@ export default function Login() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant="h2">Sign in</Typography>
+        <Typography variant="h6">The test account: admin/123456</Typography>
         <Formik
           initialValues={initialValues}
           onSubmit={(e) => handleSubmit(e)}
