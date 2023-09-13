@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { LoginState } from "../reducers/LoginReducerSlice";
 import { ColorModeContext, useMode } from "../theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
+import { Routes, Route, Link } from "react-router-dom";
 import SidebarMenu from "./SidebarMenu";
 import TopBar from "./TopBar";
 
@@ -15,7 +15,7 @@ const MainPage = () => {
 
   return (
     <>
-      {loginStateObject.loginState && (
+      {loginStateObject.loginState ? (
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline>
@@ -31,6 +31,10 @@ const MainPage = () => {
             </CssBaseline>
           </ThemeProvider>
         </ColorModeContext.Provider>
+      ) : (
+        <Typography sx={{ textAlign: "center", paddingTop: "50px" }}>
+          You haven't logged in, click <Link to="/">Here</Link> to login page.
+        </Typography>
       )}
     </>
   );
