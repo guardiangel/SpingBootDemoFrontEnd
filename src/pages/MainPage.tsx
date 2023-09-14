@@ -6,6 +6,8 @@ import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import { Routes, Route, Link } from "react-router-dom";
 import SidebarMenu from "./SidebarMenu";
 import TopBar from "./TopBar";
+import Dashboard from "../pages/Dashboard";
+import Users from "../pages/Users";
 
 const MainPage = () => {
   const loginStateObject = useSelector(
@@ -24,7 +26,8 @@ const MainPage = () => {
                 <main className="content">
                   <TopBar />
                   <Routes>
-                    <Route path="/Dash" element={<MainPage />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/users" element={<Users />} />
                   </Routes>
                 </main>
               </div>

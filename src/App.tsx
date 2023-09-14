@@ -13,7 +13,7 @@ function App() {
       <PersistGate loading={null} persistor={persistor}>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/mainPage" element={<MainPage />} />
+          <Route path="/mainPage/*" element={<MainPage />} />
           <Route path="/*" element={<PageNotFound />} />
         </Routes>
       </PersistGate>

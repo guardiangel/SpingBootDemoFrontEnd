@@ -21,3 +21,16 @@ export const submitLogin = async (data: any) => {
     uuid: data.uuid,
   });
 };
+
+//getAllUsers
+export const getAllUsers = async (token: string) => {
+  return await axios.post(
+    `${process.env.REACT_APP_BACK_END_URL}/users/getAllUsers`,
+    {},
+    {
+      headers: {
+        token: token,
+      },
+    }
+  );
+};
