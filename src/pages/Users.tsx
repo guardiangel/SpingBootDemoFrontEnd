@@ -3,7 +3,7 @@ import { UserMode } from "../interfaces/commonInterfaces";
 import { Box, useTheme, Typography, Button } from "@mui/material";
 import { colorTokens } from "../theme";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoginState } from "../reducers/LoginReducerSlice";
 import { getAllUsers } from "../apis/ApiInterfaces";
@@ -58,8 +58,9 @@ const Users = () => {
       renderCell: ({ row: { id } }: UserRow) => {
         const handleClick = (e: any) => {
           e.stopPropagation();
-
-          //navigate(`/post/${id}`);
+          //The path "/userDetail/*" defined in the MainPage. MainPage comes from "/mainPage" which comes frm App.tsx.
+          //so we need to add the full path. Pay attention to that we use "/userDetail/:id" here.
+          navigate(`/mainPage/userDetail/${id}`);
         };
 
         return (

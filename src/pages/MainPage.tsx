@@ -8,6 +8,7 @@ import SidebarMenu from "./SidebarMenu";
 import TopBar from "./TopBar";
 import Dashboard from "../pages/Dashboard";
 import Users from "../pages/Users";
+import UserDetail from "./UserDetail";
 
 const MainPage = () => {
   const loginStateObject = useSelector(
@@ -28,6 +29,7 @@ const MainPage = () => {
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/userDetail/:id" element={<UserDetail />} />
                   </Routes>
                 </main>
               </div>
