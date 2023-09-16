@@ -13,15 +13,24 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type formData = {
-  id?: string;
+  id?: number | undefined;
   userName: string;
   phonenumber: string;
-  //sex: string;
+  sex: string;
 };
-const phoneRegExp = /^(\d{3})(\d{3})(\d{4})$/;
+
+/**
+ * +919367788755
+8989829304
++16308520397
+786-307-3615
+(786) 307-3615
+ */
+const phoneRegExp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 
 const userSchema = yup.object().shape({
-  //sex: yup.string().required("required"),
+  id: yup.number().min(1).required("required"),
+  sex: yup.string().required("You can't select unknown for one's gender."),
   userName: yup.string().required("required"),
   //email: yup.string().email("email is not valid").required("required"),
   phonenumber: yup
@@ -31,6 +40,7 @@ const userSchema = yup.object().shape({
 });
 
 const UserDetail = () => {
+  //handle time format
   Moment.locale("en");
 
   const theme = useTheme();
@@ -39,7 +49,8 @@ const UserDetail = () => {
   const loginStateObject = useSelector(
     (state: LoginState) => state.loginStateObject
   );
-  const { id } = useParams();
+  // const { id } = useParams<{ id: number }>();
+  const { id } = useParams() as any;
   const [user, setUser] = useState<UserMode>();
 
   //get user data
@@ -57,8 +68,8 @@ const UserDetail = () => {
     resolver: yupResolver(userSchema),
   });
 
+  //handle submit
   const onSubmit = (data: formData) => {
-    data.id = id;
     console.log(data);
   };
 
@@ -84,17 +95,23 @@ const UserDetail = () => {
             gap: "30px",
           }}
         >
+          {/**hidden id */}
+          <div style={{ gridColumn: "span 2" }}>
+            <input {...register("id", { value: id })} type="hidden" />
+          </div>
+
           <div style={{ gridColumn: "span 1" }}>
             <label htmlFor="loginName">Login Name:</label>
             <input
               type="text"
               placeholder="LoginName"
-              value={user?.loginName}
+              defaultValue={user?.loginName}
               disabled
             />
           </div>
+          {/**user name */}
           <div style={{ gridColumn: "span 1" }}>
-            <label htmlFor="loginName">User Name:</label>
+            <label htmlFor="userName">User Name:</label>
             <input
               type="text"
               placeholder="userName"
@@ -105,41 +122,58 @@ const UserDetail = () => {
               {errors?.userName?.message}
             </span>
           </div>
+          {/**email */}
           <div style={{ gridColumn: "span 1" }}>
-            <label htmlFor="loginName">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input
               type="text"
               placeholder="Email"
-              value={user?.email}
+              defaultValue={user?.email}
               disabled
             />
           </div>
+          {/**phone number */}
           <div style={{ gridColumn: "span 1" }}>
-            <label htmlFor="loginName">Phone Number:</label>
+            <label htmlFor="phonenumber">Phone Number:</label>
             <input
               type="text"
               defaultValue={user?.phonenumber}
               placeholder="Phone Number"
+              {...register("phonenumber")}
             />
             <span style={{ color: colors.redAccent[400] }}>
               {errors?.phonenumber?.message}
             </span>
           </div>
+          {/**gender */}
           <div style={{ gridColumn: "span 1" }}>
-            {/*  <label htmlFor="sex">Gender:</label>
-            <select {...register("sex")}>
-              <option value=""></option>
-              <option value="2">Female</option>
-              <option value="1">Male</option>
-              <option value="3">Unknow</option>
-            </select> */}
+            <label>Gender:</label>
+            <select defaultValue={user?.sex} {...register("sex")}>
+              <option value="" selected={user?.sex === ""}>
+                Unknown
+              </option>
+              <option value="2" selected={user?.sex === "2"}>
+                Female
+              </option>
+              <option value="1" selected={user?.sex === "1"}>
+                Male
+              </option>
+              <option value="3" selected={user?.sex === "3"}>
+                Other
+              </option>
+            </select>
+            <span style={{ color: colors.redAccent[400] }}>
+              {errors?.sex?.message}
+            </span>
           </div>
           <div style={{ gridColumn: "span 1" }}>
             <label htmlFor="loginDate">Login Date:</label>
             <input
               type="text"
               disabled
-              value={Moment(user?.loginDate).format("YYYY-MM-DD HH:mm:ss")}
+              defaultValue={Moment(user?.loginDate).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )}
               placeholder="Login Date"
             />
           </div>

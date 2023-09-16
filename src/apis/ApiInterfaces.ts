@@ -35,7 +35,7 @@ export const getAllUsers = async (token: string) => {
 };
 
 //Get single user
-export const getUserById = async (token: string, id: string | undefined) => {
+export const getUserById = async (token: string, id: number | undefined) => {
   return await axios.post(
     `${process.env.REACT_APP_BACK_END_URL}/users/getOnlineUserById`,
     {
