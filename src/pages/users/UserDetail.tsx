@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UserMode } from "../../interfaces/commonInterfaces";
 import { useEffect } from "react";
 import { getUserById, updateUserInfo } from "../../apis/ApiInterfaces";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoginState } from "../../reducers/LoginReducerSlice";
 import { useForm } from "react-hook-form";

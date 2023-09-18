@@ -66,3 +66,18 @@ export const updateUserInfo = async (token: string, data: any) => {
     }
   );
 };
+
+//Delete user
+export const deleteUserById = async (token: string, id: number) => {
+  return await axios.post(
+    `${process.env.REACT_APP_BACK_END_URL}/users/deleteSysUserById`,
+    {
+      id: id,
+    },
+    {
+      headers: {
+        token: token,
+      },
+    }
+  );
+};

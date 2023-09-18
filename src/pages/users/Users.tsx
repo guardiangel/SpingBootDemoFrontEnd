@@ -6,7 +6,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoginState } from "../../reducers/LoginReducerSlice";
-import { getAllUsers } from "../../apis/ApiInterfaces";
+import { getAllUsers, deleteUserById } from "../../apis/ApiInterfaces";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -63,18 +63,54 @@ const Users = () => {
           navigate(`/mainPage/userDetail/${id}`);
         };
 
+        //delete record
+        const handleDelete = (e: any) => {
+          if (window.confirm("Make sure to delete?")) {
+            e.stopPropagation();
+            deleteUserById(loginStateObject.token, id)
+              .then((res) => {
+                if (res.data?.code === "0000") {
+                  alert("Delete user successfully.");
+                  setUsers(users.filter((user) => user.id !== id));
+                } else {
+                  alert(res.data?.data?.message);
+                }
+              })
+              .catch((err) => {
+                alert(err);
+              });
+          }
+        };
+
         return (
-          <Button
-            sx={{ width: "100px", backgroundColor: colors.grey[200] }}
-            onClick={handleClick}
-          >
-            <Typography
-              color={colors.greenAccent[400]}
-              sx={{ ml: "5px", fontSize: "16px" }}
+          <div>
+            <Button
+              sx={{ width: "80px", backgroundColor: colors.grey[200] }}
+              onClick={handleClick}
             >
-              detail
-            </Typography>
-          </Button>
+              <Typography
+                color={colors.greenAccent[400]}
+                sx={{ ml: "5px", fontSize: "16px" }}
+              >
+                detail
+              </Typography>
+            </Button>
+            <Button
+              sx={{
+                width: "80px",
+                backgroundColor: colors.grey[200],
+                marginLeft: "20px",
+              }}
+              onClick={handleDelete}
+            >
+              <Typography
+                color={colors.greenAccent[400]}
+                sx={{ ml: "5px", fontSize: "16px" }}
+              >
+                delete
+              </Typography>
+            </Button>
+          </div>
         );
       },
     },
