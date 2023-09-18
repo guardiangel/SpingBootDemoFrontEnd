@@ -48,3 +48,21 @@ export const getUserById = async (token: string, id: number | undefined) => {
     }
   );
 };
+
+//update userInfo
+export const updateUserInfo = async (token: string, data: any) => {
+  return await axios.post(
+    `${process.env.REACT_APP_BACK_END_URL}/users/updateSysUserInfo`,
+    {
+      id: data.id,
+      userName: data.userName,
+      phonenumber: data.phonenumber,
+      sex: data.sex,
+    },
+    {
+      headers: {
+        token: token,
+      },
+    }
+  );
+};

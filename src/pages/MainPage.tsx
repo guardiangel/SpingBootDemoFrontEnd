@@ -7,8 +7,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import SidebarMenu from "./SidebarMenu";
 import TopBar from "./TopBar";
 import Dashboard from "../pages/Dashboard";
-import Users from "../pages/Users";
-import UserDetail from "./UserDetail";
+import Users from "./users/Users";
+import UserDetail from "./users/UserDetail";
 
 const MainPage = () => {
   const loginStateObject = useSelector(

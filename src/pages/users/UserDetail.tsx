@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { UserMode } from "../interfaces/commonInterfaces";
+import { UserMode } from "../../interfaces/commonInterfaces";
 import { useEffect } from "react";
-import { getUserById } from "../apis/ApiInterfaces";
-import { useParams } from "react-router-dom";
+import { getUserById, updateUserInfo } from "../../apis/ApiInterfaces";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { LoginState } from "../reducers/LoginReducerSlice";
+import { LoginState } from "../../reducers/LoginReducerSlice";
 import { useForm } from "react-hook-form";
 import { useTheme } from "@mui/material";
-import { colorTokens } from "../theme";
+import { colorTokens } from "../../theme";
 import Moment from "moment";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,7 +26,7 @@ type formData = {
 786-307-3615
 (786) 307-3615
  */
-const phoneRegExp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+const phoneRegExp = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
 
 const userSchema = yup.object().shape({
   id: yup.number().min(1).required("required"),
@@ -40,6 +40,8 @@ const userSchema = yup.object().shape({
 });
 
 const UserDetail = () => {
+  const navigate = useNavigate();
+
   //handle time format
   Moment.locale("en");
 
@@ -49,6 +51,7 @@ const UserDetail = () => {
   const loginStateObject = useSelector(
     (state: LoginState) => state.loginStateObject
   );
+
   // const { id } = useParams<{ id: number }>();
   const { id } = useParams() as any;
   const [user, setUser] = useState<UserMode>();
@@ -71,6 +74,19 @@ const UserDetail = () => {
   //handle submit
   const onSubmit = (data: formData) => {
     console.log(data);
+    updateUserInfo(loginStateObject.token, data).then((res) => {
+      if (res.data?.code === "0000") {
+        alert("Update user successfully.");
+        setUser(res.data?.data);
+      } else {
+        alert(res.data);
+      }
+    });
+  };
+
+  const returnToList = (e: any) => {
+    e.stopPropagation();
+    navigate("/mainPage/users");
   };
 
   return (
@@ -116,7 +132,7 @@ const UserDetail = () => {
               type="text"
               placeholder="userName"
               defaultValue={user?.userName}
-              {...register("userName", { required: true, maxLength: 100 })}
+              {...register("userName", { onChange: (e) => console.log(e) })}
             />
             <span style={{ color: colors.redAccent[400] }}>
               {errors?.userName?.message}
@@ -180,6 +196,10 @@ const UserDetail = () => {
 
           <div style={{ alignItems: "center" }}>
             <input type="submit" />
+          </div>
+          <div style={{ alignItems: "center" }}>
+            {/*  <Link to="/mainPage/users">Return</Link> */}
+            <button onClick={(e) => returnToList(e)}>Return</button>
           </div>
         </div>
       </form>

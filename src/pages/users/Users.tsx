@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { UserMode } from "../interfaces/commonInterfaces";
+import { UserMode } from "../../interfaces/commonInterfaces";
 import { Box, useTheme, Typography, Button } from "@mui/material";
-import { colorTokens } from "../theme";
+import { colorTokens } from "../../theme";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { LoginState } from "../reducers/LoginReducerSlice";
-import { getAllUsers } from "../apis/ApiInterfaces";
+import { LoginState } from "../../reducers/LoginReducerSlice";
+import { getAllUsers } from "../../apis/ApiInterfaces";
 
 const Users = () => {
   const navigate = useNavigate();
