@@ -9,6 +9,7 @@ import { colorTokens } from "../theme";
 import { Link } from "react-router-dom";
 import { LoginState } from "../reducers/LoginReducerSlice";
 import { useSelector } from "react-redux";
+import SchoolIcon from "@mui/icons-material/School";
 
 interface ItemType {
   title: string;
@@ -152,6 +153,16 @@ const SidebarMenu = () => {
               <Item
                 title="Users"
                 to="/mainPage/users"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            </SubMenu>
+
+            <SubMenu label="School" icon={<SchoolIcon />}>
+              <Item
+                title="Teacher"
+                to="/mainPage/teachers"
                 icon={<PeopleOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}

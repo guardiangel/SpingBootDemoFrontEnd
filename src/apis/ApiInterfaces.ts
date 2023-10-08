@@ -81,3 +81,20 @@ export const deleteUserById = async (token: string, id: number) => {
     }
   );
 };
+
+/**
+ * get all teacher
+ * @param token
+ * @returns
+ */
+export const getAllTeachers = async (token: string) => {
+  return await axios.post(
+    `${process.env.REACT_APP_BACK_END_URL}/teachers/getAllTeachers`,
+    {},
+    {
+      headers: {
+        token: token,
+      },
+    }
+  );
+};

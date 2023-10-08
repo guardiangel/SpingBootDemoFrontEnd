@@ -9,6 +9,7 @@ import TopBar from "./TopBar";
 import Dashboard from "../pages/Dashboard";
 import Users from "./users/Users";
 import UserDetail from "./users/UserDetail";
+import Teacher from "./teachers/Teacher";
 
 const MainPage = () => {
   const loginStateObject = useSelector(
@@ -29,6 +30,7 @@ const MainPage = () => {
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/teachers" element={<Teacher />} />
                     <Route path="/userDetail/:id" element={<UserDetail />} />
                   </Routes>
                 </main>
